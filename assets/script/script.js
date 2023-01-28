@@ -1,30 +1,48 @@
+
+const apiKey = "bc744fa552e2cd837d8b4a8ae3dc6265";
+var city = "";
+var cityData = [
+    {city: ""},
+    {lon: ""},
+    {lat: ""}
+];
+
 // Prompt that allows user to enter city as search term
-    // Validate if search box empty or contains illegal characters (numbers & special characters)
-    // Use Geography API to convert city into longitude and latitude
-    const apiKey = "bc744fa552e2cd837d8b4a8ae3dc6265";
-    var city = "london";
-    getGeo()
 
-    function getGeo() {
-        var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid="+ apiKey;
+$('#searchButton').on("click", function(){
+    var searchTerm = $('#searchBox').val();
+    city = searchTerm.trim();
 
+    if(city == "") {
+        // Validate if search box empty or contains illegal characters (numbers & special characters)
+        alert("You must enter a search term")
+        return;
+    };
 
-        $.ajax ({
+    getGeo();
 
-            url: geoURL,
-            method: "GET"
-            
-            }).then(function(response) {
-            
-            
-            console.log(response);
-            
-            
-            });
+});
 
+// Use Geography API to convert city into longitude and latitude
 
-    }
-    // Send weather query url to api and GET result
+function getGeo() {
+    var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid="+ apiKey;
+    
+    $.ajax ({
+        url: geoURL,
+        method: "GET"
+        
+    }).then(function(response) {
+
+    // Building search city result as an object for use in search history
+    cityData[0].city = response[0].name;
+    cityData[1].lon = response[0].lon;
+    cityData[2].lat = response[0].lat;
+   
+    });
+};
+
+// Send weather query url to api and GET result
     // Search query is stored in localstorage as uppercase
         // Check if search term already exists in storage and add if not
     // Button created in search history linked to Local storage search
@@ -55,11 +73,7 @@
 // Search History Local Storage when a new search is completed (not restored in local storage)
     // Key = History
     // Oject
-var searches = [
-    {city: ""},
-    {lon: ""},
-    {lat: ""}
-];
+
 
 var units = "metric";
 var coordinates = {
