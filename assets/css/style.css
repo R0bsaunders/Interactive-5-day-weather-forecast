@@ -1,0 +1,52 @@
+* {
+    padding: 5px;
+}
+
+main {
+    display: flex;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 36px;
+}
+
+#header {
+    background: linear-gradient(0.75turn, blue, lightblue);
+}
+
+#asideLine {
+    border: 1px solid red;
+}
+
+#resultsContainer {
+    width: 75%;
+    height: auto;
+}
+
+aside {
+    width: 25%;
+    border: 1px solid black;
+    height: auto;
+    margin-right: 10px;
+}
+
+#currentWeather {
+    border: 1px solid black;
+}
+
+#fiveDayContainer {
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+}
+
+button {
+    margin-top: 20px !important;
+    display: block;
+    width: 100%
+}

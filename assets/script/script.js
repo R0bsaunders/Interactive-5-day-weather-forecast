@@ -1,6 +1,29 @@
 // Prompt that allows user to enter city as search term
     // Validate if search box empty or contains illegal characters (numbers & special characters)
     // Use Geography API to convert city into longitude and latitude
+    const apiKey = "bc744fa552e2cd837d8b4a8ae3dc6265";
+    var city = "london";
+    getGeo()
+
+    function getGeo() {
+        var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid="+ apiKey;
+
+
+        $.ajax ({
+
+            url: geoURL,
+            method: "GET"
+            
+            }).then(function(response) {
+            
+            
+            console.log(response);
+            
+            
+            });
+
+
+    }
     // Send weather query url to api and GET result
     // Search query is stored in localstorage as uppercase
         // Check if search term already exists in storage and add if not
@@ -34,6 +57,8 @@
     // Oject
 var searches = [
     {city: ""},
+    {lon: ""},
+    {lat: ""}
 ];
 
 var units = "metric";
@@ -41,7 +66,7 @@ var coordinates = {
     lon: '5.25',
     lat: '45.66'
 };
-const apiKey = "bc744fa552e2cd837d8b4a8ae3dc6265";
+
 var queryURL = "https://api.openweathermap.org/data/2.5/forecast?units=" + units + "&lat=" + coordinates.lat + "&lon=" + coordinates.lon + "&appid=" + apiKey;
 
 
