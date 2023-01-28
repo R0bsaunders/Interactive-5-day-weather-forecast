@@ -1,10 +1,11 @@
 
-const apiKey = "bc744fa552e2cd837d8b4a8ae3dc6265";
+const apiKey = "339169be96f8b23aa553a475404500fd";
 var city = "";
+var units = "metric";
 var cityData = [
-    {city: ""},
-    {lon: ""},
-    {lat: ""}
+    {city: ''},
+    {lon: 0},
+    {lat: 0}
 ];
 
 // Prompt that allows user to enter city as search term
@@ -20,12 +21,13 @@ $('#searchButton').on("click", function(){
     };
 
     getGeo();
-
+    getForecast();
 });
 
 // Use Geography API to convert city into longitude and latitude
 
 function getGeo() {
+
     var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid="+ apiKey;
     
     $.ajax ({
@@ -35,15 +37,37 @@ function getGeo() {
     }).then(function(response) {
 
     // Building search city result as an object for use in search history
+
     cityData[0].city = response[0].name;
     cityData[1].lon = response[0].lon;
     cityData[2].lat = response[0].lat;
-   
+
     });
 };
 
+
 // Send weather query url to api and GET result
-    // Search query is stored in localstorage as uppercase
+
+function getForecast() {
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
+        
+    $.ajax ({
+
+    url: queryURL,
+    method: "GET"
+        
+    }).then(function(response) {
+        
+        
+        console.log(response);
+
+
+    });
+};
+
+
+// Search query is stored in localstorage as uppercase
         // Check if search term already exists in storage and add if not
     // Button created in search history linked to Local storage search
         // Loop to check storage and create button if there is a search history
@@ -73,26 +97,3 @@ function getGeo() {
 // Search History Local Storage when a new search is completed (not restored in local storage)
     // Key = History
     // Oject
-
-
-var units = "metric";
-var coordinates = {
-    lon: '5.25',
-    lat: '45.66'
-};
-
-var queryURL = "https://api.openweathermap.org/data/2.5/forecast?units=" + units + "&lat=" + coordinates.lat + "&lon=" + coordinates.lon + "&appid=" + apiKey;
-
-
-$.ajax ({
-
-url: queryURL,
-method: "GET"
-
-}).then(function(response) {
-
-
-console.log(response);
-
-
-});
