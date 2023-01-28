@@ -1,5 +1,7 @@
 
 const apiKey = "339169be96f8b23aa553a475404500fd";
+const metric =  "&#8451"
+const imperial = "&#8457"
 var city = "";
 var units = "metric";
 var cityData = [
@@ -21,7 +23,13 @@ $('#searchButton').on("click", function(){
     };
 
     getGeo();
-    getForecast();
+
+    //Create delay in Forecast retrieval to ensure variable is updated
+    setTimeout(() => {
+        getForecast() 
+    }, 500);
+
+
 });
 
 // Use Geography API to convert city into longitude and latitude
@@ -43,14 +51,15 @@ function getGeo() {
     cityData[2].lat = response[0].lat;
 
     });
+
 };
 
 
 // Send weather query url to api and GET result
 
 function getForecast() {
-
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
+console.log(cityData);
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
         
     $.ajax ({
 
@@ -58,9 +67,15 @@ function getForecast() {
     method: "GET"
         
     }).then(function(response) {
-        
-        
+        city = response.name
         console.log(response);
+        $('#forecastToday').html(response.name)
+        $('#temp').html("Temperature: " + response.main.temp + metric)
+        $('#wind').html("Humidity: " + response.main.humidity + "%")
+        $('#humidity').html("Wind Speed: " + response.wind.speed + " mph")
+
+
+ 
 
 
     });
