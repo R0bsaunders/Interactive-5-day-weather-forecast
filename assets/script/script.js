@@ -1,7 +1,10 @@
-
+const tempToday = $('#temp');
+const humidityToday = $('#humidity');
+const windToday =  $('#wind');
+const forecastTitle = $('#forecastToday');
 const apiKey = "339169be96f8b23aa553a475404500fd";
-const metric =  "&#8451"
-const imperial = "&#8457"
+const metric =  "&#8451";
+const imperial = "&#8457";
 var city = "";
 var units = "metric";
 var cityData = [
@@ -23,13 +26,7 @@ $('#searchButton').on("click", function(){
     };
 
     getGeo();
-
-    //Create delay in Forecast retrieval to ensure variable is updated
-    setTimeout(() => {
-        getForecast() 
-    }, 500);
-
-
+    getForecast();
 });
 
 // Use Geography API to convert city into longitude and latitude
@@ -58,27 +55,33 @@ function getGeo() {
 // Send weather query url to api and GET result
 
 function getForecast() {
-console.log(cityData);
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
-        
-    $.ajax ({
 
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
+      
+    $.ajax ({
     url: queryURL,
     method: "GET"
         
     }).then(function(response) {
-        city = response.name
-        console.log(response);
-        $('#forecastToday').html(response.name)
-        $('#temp').html("Temperature: " + response.main.temp + metric)
-        $('#wind').html("Humidity: " + response.main.humidity + "%")
-        $('#humidity').html("Wind Speed: " + response.wind.speed + " mph")
+        // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
+        if (response.name == "Globe") {
+            getForecast();
 
+        } else {
 
- 
-
-
+        forecastTitle.html(response.name);
+        tempToday.html("Temperature: " + response.main.temp + metric);
+        humidityToday.html("Humidity: " + response.main.humidity + "%");
+        windToday.html("Wind Speed: " + response.wind.speed + " mph");
+        };
     });
+    
+    // Reset City Data so that a new search can be made. If this isn't done, the above if statement doesn't apply and allows the API to be called before the GEO API has finsihed
+    cityData = [
+        {city: ''},
+        {lon: 0},
+        {lat: 0}
+    ];
 };
 
 
