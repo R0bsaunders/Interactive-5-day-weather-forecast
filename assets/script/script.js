@@ -21,8 +21,15 @@ var parsed = '';
 // Run function that checks for and prints any previous searches
 createHistoryButtons();
 
+$('#clearHistory').on("click", function(event){
+    localStorage.clear();
+});
+
+
 // Prompt that allows user to enter city as search term
-$('#searchButton').on("click", function(){
+$('#searchButton').on("click", function(event){
+    event.preventDefault();
+
     searchTerm = $('#searchBox').val();
     city = searchTerm.trim();
 
@@ -96,7 +103,7 @@ function getForecast() {
         var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
 
         // Add City Name, Date and icon to Title Text
-        cityTitle.html(`${response.name} ${moment.unix(response.dt).format("DD/MM/YYYY")} <img src=${iconURL} />`);
+        cityTitle.html(`${response.name} ${moment.unix(response.dt).format("(DD/MM/YYYY)")} <img src=${iconURL} />`);
     
         // Add weather icon to title
         titleIcon.attr("src", iconURL);
@@ -166,7 +173,7 @@ function fiveDay() {
                     };
                 }; 
             };
-
+console.log(fiveDaysForecast);
             // Loop to dynamically create HTML
             for (var i = 0; i < fiveDaysForecast.length; i++) {
 
@@ -178,6 +185,11 @@ function fiveDay() {
                 let cardHeader = $('<div>')
                 .addClass("card-header")
                 .text(moment.unix(fiveDaysForecast[i].dt).format("DD/MM/YYYY"));
+
+                // Add icon
+                let cardIcon = $('<img>')
+                .attr("src", `http://openweathermap.org/img/wn/${fiveDaysForecast[i].weather[0].icon}@2x.png`)
+                .addClass("card-icon");
 
                 // Create Card Body
                 let cardBody = $('<div>')
@@ -203,6 +215,7 @@ function fiveDay() {
                 cardBody.append(cardWind);
                 cardBody.append(cardHumidity);
                 forecastCard.append(cardHeader);
+                forecastCard.append(cardIcon);
                 forecastCard.append(cardBody);
                 cardContainer.append(forecastCard);
 

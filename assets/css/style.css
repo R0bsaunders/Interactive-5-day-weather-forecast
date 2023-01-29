@@ -53,6 +53,12 @@ aside {
     gap: 5px;
 }
 
+.card-icon {
+    height: 75px;
+    width: 85px;
+
+}
+
 .forecast-card {
     flex: 1 1 200px;
     flex-grow: 0;
