@@ -140,7 +140,7 @@ function fiveDay() {
             setTimeout(() => {
                 getForecast();
             }, 150);
-            
+
         } else {
             
             // Declare new variables to obtain and store next 5 dates excluding today and a new array to hold only applicable weather data from the API
@@ -170,7 +170,6 @@ function fiveDay() {
                 // Create card container DIV
                 let forecastCard = $('<div>')
                 .addClass("card text-white bg-primary mb-3 forecast-card")
-
 
                 // Create Card header
                 let cardHeader = $('<div>')
@@ -223,7 +222,7 @@ function searchHistory() {
         localStorage.setItem("history", JSON.stringify(history));
         var button = $('<button>')
         .addClass("btn btn-lg btn-primary search-history")
-        .text(history[0])
+        .text(titlecase(history[0]))
         .attr("data-city", history[0])
         $('#searchHistory').prepend(button)
     };
@@ -245,7 +244,7 @@ function searchHistory() {
             // Dynamically create the HTML buttons on page
             var newHistoryButton = $('<button>')
             .addClass("btn btn-lg btn-primary search-history")
-            .text(history[0])
+            .text(titlecase(history[0]))
             .attr("data-city", history[0])
             $('#searchHistory').prepend(newHistoryButton)
         };
@@ -261,17 +260,17 @@ function createHistoryButtons() {
 
         for (let b = 0; b < parsed.length; b++) {
             var historyButton = $('<button>')
-            .addClass("btn btn-lg btn-primary search-history")
-            .text(parsed[b])
+            .addClass("btn btn-lg btn-primary search-history")          
+            .text(titlecase(parsed[b]))
             .attr("data-city", parsed[b])
             $('#searchHistory').prepend(historyButton)
         };
     };
 };
 
+// Function to trigger a search
 function triggerSearch() {
-
-getGeo();
+    getGeo();
 
     // Timeout gives the GRO API time to return a result and reduce the API demand on the Weather API
     setTimeout(() => {
@@ -279,3 +278,14 @@ getGeo();
         
     }, 150);
 };
+
+// Function to have buttons display city name as TitleCase
+function titlecase(str) {
+    str = str.toLowerCase().split(' ');
+
+    for (let l = 0; l < str.length; l++) {
+        str[l] = str[l].charAt(0).toUpperCase() + str[l].slice(1);
+    }
+
+    return str.join(' ');
+}
