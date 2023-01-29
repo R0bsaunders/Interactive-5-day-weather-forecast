@@ -95,8 +95,11 @@ function getForecast() {
         // Update Today's forecast: Compile Icon data
         var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
 
-        // Add City Name, Date and Icon to Title Text
-        cityTitle.text(`${response.name} ${moment.unix(response.dt).format("DD/MM/YYYY")} ${titleIcon.attr("src", iconURL)}`);
+        // Add City Name, Date and icon to Title Text
+        cityTitle.html(`${response.name} ${moment.unix(response.dt).format("DD/MM/YYYY")} <img src=${iconURL} />`);
+    
+        // Add weather icon to title
+        titleIcon.attr("src", iconURL);
 
         // Add current temperature
         currentTemp.html("Temperature: " + response.main.temp + metric);
