@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <title>Document</title>
 </head>
@@ -14,8 +14,8 @@
 </header>
 
 <body>
-
     <main>
+        <!-- Container for search input, buttons and search history -->
         <aside>
             <form>
                 <h2>Search for a City:</h2>
@@ -25,13 +25,14 @@
             </form>
 
             <hr id="asideLine"/>
+
             <h4>Search History:</h4>
-            <div id="searchHistory">
 
-
-            </div>
+            <!-- Container for the search history buttons -->
+            <div id="searchHistory"></div>
         </aside>
 
+        <!-- Container for the current day's weather results -->
         <div id="resultsContainer">
             <article id="currentWeather">
                 <h2 id="cityTitle">Search a city to see today's forecast here <img id="titleIcon" /></h2>
@@ -39,24 +40,22 @@
                 <p id="currentWind"></p>
                 <p id="currentHumidity"></p>
             </article>
-
+            
+            <!-- Container for the 5-day forecast -->
             <div id="fiveDayContainer" class="container">
                 <h3>5-Day Forecast:</h3>
-                <div id="cardContainer" class="row">
-                   
-                </div>
+
+                <!-- Container for the cards that contain each future day's forecast -->
+                <div id="cardContainer" class="row"></div>
             </div>
 
         </div>
     </main>
 
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> <!-- Moment JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> <!-- Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script> <!-- BootStrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> <!-- Jquery -->
-    <script src="/assets/script/script.js"></script> <!-- Main Script -->
+    <script src="assets/script/script.js"></script> <!-- Main Script -->
 </body>
 </html>
