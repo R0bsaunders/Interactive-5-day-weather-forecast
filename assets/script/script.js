@@ -184,6 +184,15 @@ function fiveDay() {
 var today = moment().format("YYYY-MM-DD HH:mm:ss")
 console.log(today);
 
+// Create an array with the above text that is the date of the next 5 days
+
+var futureFiveDates =[];
+
+for (var i = 1; i < 6; i++) {
+    futureFiveDates.push(moment().day(i).format("YYYY-MM-DD 15:00:00"))
+    console.log(futureFiveDates);
+};
+
 
 
     // Search query is stored in localstorage as uppercase
