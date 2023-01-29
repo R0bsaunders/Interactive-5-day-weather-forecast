@@ -42,9 +42,21 @@ aside {
 #fiveDayContainer {
     border: 1px solid black;
     margin-top: 10px;
+
 }
 
+#cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 5px;
+}
 
+.forecast-card {
+    flex: 1 1 200px;
+    flex-grow: 0;
+}
 
 input {
     width: 100%;

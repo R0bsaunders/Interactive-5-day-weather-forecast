@@ -15,11 +15,15 @@ var cityData = [
     {lon: 0},
     {lat: 0}
 ];
+var searchTerm = "";
+var parsed = '';
+
+// Run function that checks for and prints any previous searches
+createHistoryButtons();
 
 // Prompt that allows user to enter city as search term
-
 $('#searchButton').on("click", function(){
-    var searchTerm = $('#searchBox').val();
+    searchTerm = $('#searchBox').val();
     city = searchTerm.trim();
 
     if(city == "") {
@@ -28,18 +32,30 @@ $('#searchButton').on("click", function(){
         return;
     };
 
-    getGeo();
-    // Timeout gives the GRO API time to return a result and reduce the API demand on the Weather API
-    setTimeout(() => {
-        getForecast();
-    }, 150);
+    // Prompt to show that data is fetching (Helps the user if the API responses are slow)
+    cityTitle.text("Fetching weather data...");
 
+    searchHistory();
+    triggerSearch();
+});
+
+// Listener for search history buttons
+$('#searchHistory').on("click", function(event){
+    // Get the event target
+    var element = event.target;
+
+    // Update city variable to the clicked button's data-city - this will become the search parameter
+    city = element.getAttribute("data-city");
+
+    // Prompt to show that data is fetching (Helps the user if the API responses are slow)
+    cityTitle.text("Fetching weather data...");
+
+    triggerSearch();
 });
 
 // Use Geography API to convert city into longitude and latitude
 
 function getGeo() {
-
     var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid="+ apiKey;
     
     $.ajax ({
@@ -49,27 +65,22 @@ function getGeo() {
     }).then(function(response) {
 
     // Building search city result as an object for use in search history
-
     cityData[0].city = response[0].name;
     cityData[1].lon = response[0].lon;
     cityData[2].lat = response[0].lat;
 
     });
-
 };
 
-
 // Send weather query url to api and GET result
-
 function getForecast() {
-
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
 
     $.ajax ({
     url: queryURL,
     method: "GET"
-        
     }).then(function(response) {
+
         // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
         if (response.name == "Globe") {
             cityTitle.text("Fetching weather data...");
@@ -96,11 +107,9 @@ function getForecast() {
         // Add current wind speed
         currentWind.html("Wind Speed: " + response.wind.speed + windMetric);
         };
-
     });
 
     // Trigger five day forecast function
-
     fiveDay()
 
     // Reset City Data so that a new search can be made. If this isn't done, the above if statement doesn't apply and allows the API to be called before the GEO API has finsihed
@@ -111,16 +120,16 @@ function getForecast() {
     ];
 };
 
-// Present user with future weather conditions
-
+// Function to present user with future weather conditions
 function fiveDay() {
 
+    // This empties the container to prevent stacking of dynamically created cards on future searches
+    $('#cardContainer').html("");
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?&units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
 
     $.ajax ({
     url: queryURL,
     method: "GET"
-        
     }).then(function(response) {
 
         // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
@@ -131,10 +140,10 @@ function fiveDay() {
             setTimeout(() => {
                 getForecast();
             }, 150);
-
+            
         } else {
-
-
+            
+            // Declare new variables to obtain and store next 5 dates excluding today and a new array to hold only applicable weather data from the API
             var futureFiveDates =[];
             var fiveDaysForecast = [];
 
@@ -160,8 +169,8 @@ function fiveDay() {
 
                 // Create card container DIV
                 let forecastCard = $('<div>')
-                .addClass("card text-white bg-primary mb-3")
-                .attr("style", "max-width: 20%;");
+                .addClass("card text-white bg-primary mb-3 forecast-card")
+
 
                 // Create Card header
                 let cardHeader = $('<div>')
@@ -187,31 +196,86 @@ function fiveDay() {
                 .attr("id", "card-wind")
                 .html("Humidity: " + fiveDaysForecast[i].main.humidity + " %");
 
+                // Append HTML elements
                 cardBody.append(cardTemp);
                 cardBody.append(cardWind);
                 cardBody.append(cardHumidity);
                 forecastCard.append(cardHeader);
+                forecastCard.append(cardBody);
                 cardContainer.append(forecastCard);
-                cardContainer.append(cardBody);
 
             };
         };
-
     });
-
 };
 
-    // Search query is stored in localstorage as uppercase
-        // Check if search term already exists in storage and add if not
-    // Button created in search history linked to Local storage search
-        // Loop to check storage and create button if there is a search history
-            // search term saved as data-city submits to API again
-    // Clear Search History button to delete all local storage and therefore all history buttons
+// Function to store search term in the local Storage as an array
+function searchHistory() {
+    // Declare variable as an empty array. This will hold the search term and store it as an array item
+    var history = [];
 
-// Display user search term as a button
-    // When clicked, search is completed again
-        // Data-city attribute is stored and can be used as the search term
+    // Adding search term as an array to History
+    history[0] = searchTerm.toUpperCase().trim();
 
-// Search History Local Storage when a new search is completed (not restored in local storage)
-    // Key = History
-    // Oject
+    // Check to see if there is any history yet
+    if(!localStorage.history){
+        // If there is no key called history in local storage then add it as well as the search term
+        localStorage.setItem("history", JSON.stringify(history));
+        var button = $('<button>')
+        .addClass("btn btn-lg btn-primary search-history")
+        .text(history[0])
+        .attr("data-city", history[0])
+        $('#searchHistory').prepend(button)
+    };
+
+    // Check to see if the search term already exists so get local storage history key and convert the string into an array
+    parsed = JSON.parse(localStorage.history)
+
+    // Run a loop that checks for search term so that the entire argument can be broken if the search exists already
+    for (let j = 0; j < parsed.length; j++) {
+
+        if (parsed.includes(history[0])) {
+            break;
+
+        } else {
+            // If it does not exist then add the term to array and send it back to local storage as a string
+            parsed.push(history[0]); 
+            localStorage.setItem("history", JSON.stringify(parsed));
+
+            // Dynamically create the HTML buttons on page
+            var newHistoryButton = $('<button>')
+            .addClass("btn btn-lg btn-primary search-history")
+            .text(history[0])
+            .attr("data-city", history[0])
+            $('#searchHistory').prepend(newHistoryButton)
+        };
+    };
+};
+
+// Function to display any results already in history
+function createHistoryButtons() {
+
+    if(localStorage.history) {
+            
+        parsed = JSON.parse(localStorage.history)
+
+        for (let b = 0; b < parsed.length; b++) {
+            var historyButton = $('<button>')
+            .addClass("btn btn-lg btn-primary search-history")
+            .text(parsed[b])
+            .attr("data-city", parsed[b])
+            $('#searchHistory').prepend(historyButton)
+        };
+    };
+};
+
+function triggerSearch() {
+
+getGeo();
+
+    // Timeout gives the GRO API time to return a result and reduce the API demand on the Weather API
+    setTimeout(() => {
+        getForecast();
+        
+    }, 150);
+};
