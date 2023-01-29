@@ -1,10 +1,12 @@
 const currentTemp = $('#currentTemp');
 const currentHumidity = $('#currentHumidity');
+const cardContainer = $('#cardContainer')
 const currentWind =  $('#currentWind');
 const cityTitle = $('#cityTitle');
 const titleIcon = $('#titleIcon');
 const apiKey = "339169be96f8b23aa553a475404500fd";
 const metric =  "&#8451";
+const windMetric =  " MPH";
 const imperial = "&#8457";
 var city = "";
 var units = "metric";
@@ -70,23 +72,37 @@ function getForecast() {
     }).then(function(response) {
         // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
         if (response.name == "Globe") {
-            console.log("Waiting...");
+            cityTitle.text("Fetching weather data...");
+
             // Timeout is to prevent excessive calls to the API. There is already 150ms further up so this is an added measure
             setTimeout(() => {
                 getForecast();
-            }, 200);
+            }, 150);
 
         } else {
-
-        // Update Today's forecast: Name
+            console.log(response);
+        // Update Today's forecast: Compile Icon data
         var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+
+        // Add City Name, Date and Icon to Title Text
         cityTitle.text(`${response.name} ${moment.unix(response.dt).format("DD/MM/YYYY")} ${titleIcon.attr("src", iconURL)}`);
+
+        // Add current temperature
         currentTemp.html("Temperature: " + response.main.temp + metric);
+
+        // Add current humidity
         currentHumidity.html("Humidity: " + response.main.humidity + "%");
-        currentWind.html("Wind Speed: " + response.wind.speed + " mph");
+
+        // Add current wind speed
+        currentWind.html("Wind Speed: " + response.wind.speed + windMetric);
         };
+
     });
-    
+
+    // Trigger five day forecast function
+
+    fiveDay()
+
     // Reset City Data so that a new search can be made. If this isn't done, the above if statement doesn't apply and allows the API to be called before the GEO API has finsihed
     cityData = [
         {city: ''},
@@ -95,23 +111,80 @@ function getForecast() {
     ];
 };
 
-
-
-
-
-    // The city name
-    // The date
-    // An icon representation of weather conditions
-    // The temperature
-    // The humidity
-    // The wind speed
-
 // Present user with future weather conditions
 
-    // The date
-    // An icon representation of weather conditions
-    // The temperature
-    // The humidity
+function fiveDay() {
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?&units=" + units + "&lat=" + cityData[2].lat + "&lon=" + cityData[1].lon + "&appid=" + apiKey;
+
+    $.ajax ({
+    url: queryURL,
+    method: "GET"
+        
+    }).then(function(response) {
+        console.log(response);
+        // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
+        if (response.name == "Globe") {
+            cityTitle.text("Fetching weather data...");
+
+            // Timeout is to prevent excessive calls to the API. There is already 150ms further up so this is an added measure
+            setTimeout(() => {
+                getForecast();
+            }, 150);
+
+        } else {
+
+            for (var i = 1; i < 6; i++) {
+                // Create card container DIV
+                let forecastCard = $('<div>')
+                .addClass("card text-white bg-primary mb-3")
+                .attr("style", "max-width: 20%;");
+
+                // Create Card header
+                let cardHeader = $('<div>')
+                .addClass("card-header")
+                .text(moment.unix(response.list[i].dt).format("DD/MM/YYYY"));
+
+                // Create Card Body
+                let cardBody = $('<div>')
+                .addClass("card-body");
+
+                // Create card Temp
+                let cardTemp = $('<p>')
+                .attr("id", "card-temp")
+                .html("Temp: " + response.list[i].main.temp + metric);
+
+                // Create card Wind
+                let cardWind = $('<p>')
+                .attr("id", "card-wind")
+                .html("Wind: " + response.list[i].wind.speed + windMetric);
+
+                // Create card Humidity
+                let cardHumidity = $('<p>')
+                .attr("id", "card-wind")
+                .html("Humidity: " + response.list[i].main.humidity + " %");
+
+
+                cardBody.append(cardTemp);
+                cardBody.append(cardWind);
+                cardBody.append(cardHumidity);
+                forecastCard.append(cardHeader);
+                cardContainer.append(forecastCard);
+                cardContainer.append(cardBody);
+
+            }
+        }
+
+    });
+
+};
+
+// Get today's date and store in variable in the exact format expected in the API array
+
+var today = moment().format("YYYY-MM-DD HH:mm:ss")
+console.log(today);
+
+
 
     // Search query is stored in localstorage as uppercase
         // Check if search term already exists in storage and add if not
