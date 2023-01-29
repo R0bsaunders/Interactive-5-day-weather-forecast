@@ -25,6 +25,9 @@ h1 {
     height: auto;
 }
 
+#titleIcon {
+    display: inline;
+}
 aside {
     width: 25%;
     border: 1px solid black;
