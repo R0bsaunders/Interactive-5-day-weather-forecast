@@ -5,9 +5,9 @@ const currentWind =  $('#currentWind');
 const cityTitle = $('#cityTitle');
 const titleIcon = $('#titleIcon');
 const apiKey = "339169be96f8b23aa553a475404500fd";
-const metric =  "&#8451";
+const metric =  " &#8451";
 const windMetric =  " MPH";
-const imperial = "&#8457";
+const imperial = " &#8457";
 var city = "";
 var units = "metric";
 var cityData = [
@@ -24,7 +24,6 @@ createHistoryButtons();
 $('#clearHistory').on("click", function(event){
     localStorage.clear();
 });
-
 
 // Prompt that allows user to enter city as search term
 $('#searchButton').on("click", function(event){
@@ -237,7 +236,7 @@ function searchHistory() {
         // If there is no key called history in local storage then add it as well as the search term
         localStorage.setItem("history", JSON.stringify(history));
         var button = $('<button>')
-        .addClass("btn btn-lg btn-primary search-history")
+        .addClass("btn btn-success btn-sm search-history")
         .text(titlecase(history[0]))
         .attr("data-city", history[0])
         $('#searchHistory').prepend(button)
@@ -259,7 +258,7 @@ function searchHistory() {
 
             // Dynamically create the HTML buttons on page
             var newHistoryButton = $('<button>')
-            .addClass("btn btn-lg btn-primary search-history")
+            .addClass("btn btn-success btn-sm search-history")
             .text(titlecase(history[0]))
             .attr("data-city", history[0])
             $('#searchHistory').prepend(newHistoryButton)
@@ -276,7 +275,7 @@ function createHistoryButtons() {
 
         for (let b = 0; b < parsed.length; b++) {
             var historyButton = $('<button>')
-            .addClass("btn btn-lg btn-primary search-history")          
+            .addClass("btn btn-success btn-sm search-history")          
             .text(titlecase(parsed[b]))
             .attr("data-city", parsed[b])
             $('#searchHistory').prepend(historyButton)

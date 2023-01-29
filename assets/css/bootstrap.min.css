@@ -46,7 +46,7 @@
 	--bs-danger: #d9534f;
 	--bs-light: #f8f9fa;
 	--bs-dark: #343a40;
-	--bs-primary-rgb: 69, 130, 236;
+	--bs-primary-rgb: #2D3E50;
 	--bs-secondary-rgb: 173, 181, 189;
 	--bs-success-rgb: 2, 184, 117;
 	--bs-info-rgb: 23, 162, 184;
@@ -2498,7 +2498,7 @@ textarea.form-control-lg {
 	--bs-btn-bg: transparent;
 	--bs-btn-border-width: 1px;
 	--bs-btn-border-color: transparent;
-	--bs-btn-border-radius: 1.078em;
+	--bs-btn-border-radius: 5px;
 	--bs-btn-hover-border-color: transparent;
 	--bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 	--bs-btn-disabled-opacity: 0.65;
@@ -2845,7 +2845,7 @@ textarea.form-control-lg {
 	--bs-btn-padding-y: 0.5rem;
 	--bs-btn-padding-x: 1rem;
 	--bs-btn-font-size: calc(1.2625rem + 0.15vw);
-	--bs-btn-border-radius: 2.688em
+
 }
 @media (min-width:1200px) {
 	.btn-group-lg>.btn, .btn-lg {
@@ -2855,8 +2855,10 @@ textarea.form-control-lg {
 .btn-group-sm>.btn, .btn-sm {
 	--bs-btn-padding-y: 0.25rem;
 	--bs-btn-padding-x: 0.5rem;
-	--bs-btn-font-size: 0.688rem;
-	--bs-btn-border-radius: 0.844em
+	--bs-btn-font-size: 1rem;
+	--bs-btn-border-radius: 5px;
+	color: #000;;
+
 }
 .fade {
 	transition: opacity .15s linear
@@ -3782,14 +3784,14 @@ textarea.form-control-lg {
 	--bs-card-border-radius: 0.375rem;
 	--bs-card-box-shadow: ;
 	--bs-card-inner-border-radius: calc(0.375rem - 1px);
-	--bs-card-cap-padding-y: 0.5rem;
-	--bs-card-cap-padding-x: 1rem;
+
+
 	--bs-card-cap-bg: rgba(0, 0, 0, 0.03);
 	--bs-card-cap-color: ;
 	--bs-card-height: ;
 	--bs-card-color: ;
 	--bs-card-bg: #fff;
-	--bs-card-img-overlay-padding: 1rem;
+
 	--bs-card-group-margin: 0.75rem;
 	position: relative;
 	display: flex;
@@ -3825,7 +3827,6 @@ textarea.form-control-lg {
 }
 .card-body {
 	flex: 1 1 auto;
-	padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
 	color: var(--bs-card-color)
 }
 .card-title {
@@ -7271,7 +7272,7 @@ textarea.form-control-lg {
 }
 .bg-primary {
 	--bs-bg-opacity: 1;
-	background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity))!important
+	background-color: #2D3E50;
 }
 .bg-secondary {
 	--bs-bg-opacity: 1;
