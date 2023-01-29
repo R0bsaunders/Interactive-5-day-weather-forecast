@@ -80,7 +80,7 @@ function getForecast() {
             }, 150);
 
         } else {
-            console.log(response);
+
         // Update Today's forecast: Compile Icon data
         var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
 
@@ -122,7 +122,7 @@ function fiveDay() {
     method: "GET"
         
     }).then(function(response) {
-        console.log(response);
+
         // Globe is returned when the GEO API hasn't finished so IF statement ensures data displayed will never be Globe
         if (response.name == "Globe") {
             cityTitle.text("Fetching weather data...");
@@ -134,7 +134,30 @@ function fiveDay() {
 
         } else {
 
+
+            var futureFiveDates =[];
+            var fiveDaysForecast = [];
+
+            // Create an array with the date of the next 5 days to compare with incoming weather data and only fetch the data for said date
             for (var i = 1; i < 6; i++) {
+            futureFiveDates.push(moment().day(i).format("YYYY-MM-DD 12:00:00"));
+
+            };
+
+            // Loop to check dates array is contained in the API response and save only relevant weather data into new array
+            for (let i = 0; i < response.list.length; i++) {
+                for(let j = 0; j < futureFiveDates.length; j++) {
+                    // Check if array [i] date contains the date in futureFive Dates
+                    if(response.list[i].dt_txt == futureFiveDates[j]) {
+                        // Push only the matching array into Five Days Forecast which will be used as the data to append
+                        fiveDaysForecast.push(response.list[i]);
+                    };
+                }; 
+            };
+
+            // Loop to dynamically create HTML
+            for (var i = 0; i < fiveDaysForecast.length; i++) {
+
                 // Create card container DIV
                 let forecastCard = $('<div>')
                 .addClass("card text-white bg-primary mb-3")
@@ -143,7 +166,7 @@ function fiveDay() {
                 // Create Card header
                 let cardHeader = $('<div>')
                 .addClass("card-header")
-                .text(moment.unix(response.list[i].dt).format("DD/MM/YYYY"));
+                .text(moment.unix(fiveDaysForecast[i].dt).format("DD/MM/YYYY"));
 
                 // Create Card Body
                 let cardBody = $('<div>')
@@ -152,18 +175,17 @@ function fiveDay() {
                 // Create card Temp
                 let cardTemp = $('<p>')
                 .attr("id", "card-temp")
-                .html("Temp: " + response.list[i].main.temp + metric);
+                .html("Temp: " + fiveDaysForecast[i].main.temp + metric);
 
                 // Create card Wind
                 let cardWind = $('<p>')
                 .attr("id", "card-wind")
-                .html("Wind: " + response.list[i].wind.speed + windMetric);
+                .html("Wind: " + fiveDaysForecast[i].wind.speed + windMetric);
 
                 // Create card Humidity
                 let cardHumidity = $('<p>')
                 .attr("id", "card-wind")
-                .html("Humidity: " + response.list[i].main.humidity + " %");
-
+                .html("Humidity: " + fiveDaysForecast[i].main.humidity + " %");
 
                 cardBody.append(cardTemp);
                 cardBody.append(cardWind);
@@ -172,28 +194,12 @@ function fiveDay() {
                 cardContainer.append(forecastCard);
                 cardContainer.append(cardBody);
 
-            }
-        }
+            };
+        };
 
     });
 
 };
-
-// Get today's date and store in variable in the exact format expected in the API array
-
-var today = moment().format("YYYY-MM-DD HH:mm:ss")
-console.log(today);
-
-// Create an array with the above text that is the date of the next 5 days
-
-var futureFiveDates =[];
-
-for (var i = 1; i < 6; i++) {
-    futureFiveDates.push(moment().day(i).format("YYYY-MM-DD 15:00:00"))
-    console.log(futureFiveDates);
-};
-
-
 
     // Search query is stored in localstorage as uppercase
         // Check if search term already exists in storage and add if not
