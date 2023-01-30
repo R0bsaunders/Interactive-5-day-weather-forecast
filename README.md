@@ -7,7 +7,9 @@ Demonstrating all of the JavaScript learnt so far, this simple (on the outside) 
 
 ## Usage
 
-Visit the app here
+Visit the app here: 
+
+See the repository here: https://github.com/R0bsaunders/Interactive-5-day-weather-forecast
 
 Simply enter a city name in the search box and hit enter to see the forecast. Press a search history button to show the weather for that particular search term again. Don't worry, you can't add the same search to the history more than once - no wasted space showing the same searches multiple times. Want to clear your search history? Easy! Simply click 'clear history' and you're back to a blank canvas.
 

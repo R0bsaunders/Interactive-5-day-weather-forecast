@@ -62,7 +62,7 @@ $('#searchHistory').on("click", function(event){
 // Use Geography API to convert city into longitude and latitude
 
 function getGeo() {
-    var geoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid="+ apiKey;
+    var geoURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid="+ apiKey;
     
     $.ajax ({
         url: geoURL,
@@ -99,7 +99,7 @@ function getForecast() {
         } else {
 
         // Update Today's forecast: Compile Icon data
-        var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+        var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
 
         // Add City Name, Date and icon to Title Text
         cityTitle.html(`${response.name} ${moment.unix(response.dt).format("(DD/MM/YYYY)")} <img src=${iconURL} />`);
@@ -187,7 +187,7 @@ console.log(fiveDaysForecast);
 
                 // Add icon
                 let cardIcon = $('<img>')
-                .attr("src", `http://openweathermap.org/img/wn/${fiveDaysForecast[i].weather[0].icon}@2x.png`)
+                .attr("src", `https://openweathermap.org/img/wn/${fiveDaysForecast[i].weather[0].icon}@2x.png`)
                 .addClass("card-icon");
 
                 // Create Card Body
