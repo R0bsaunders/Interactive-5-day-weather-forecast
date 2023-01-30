@@ -7,7 +7,7 @@ Demonstrating all of the JavaScript learnt so far, this simple (on the outside) 
 
 ## Usage
 
-Visit the app here: 
+Visit the app here: https://r0bsaunders.github.io/Interactive-5-day-weather-forecast/
 
 See the repository here: https://github.com/R0bsaunders/Interactive-5-day-weather-forecast
 
